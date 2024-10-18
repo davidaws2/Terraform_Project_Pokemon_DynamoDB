@@ -1,0 +1,87 @@
+# Pokémon Collector
+
+This project is a Pokémon collector application that uses the PokeAPI to fetch random Pokémon and stores them in an AWS DynamoDB database.
+The infrastructure is provisioned using Terraform, and the application is automatically deployed to an EC2 instance.
+
+## Prerequisites -
+
+- - AWS account with appropriate permissions
+
+- - Terraform installed. 
+
+      if not install use - steps to install terraform on cloud9 (its in amazon web services) -
+
+        1. wget https://releases.hashicorp.com/terraform/1.9.7/terraform_1.9.7_linux_amd64.zip
+
+        2. unzip terraform_1.9.7_linux_amd64.zip
+
+        3. sudo mv terraform /usr/local/bin/
+
+        4. terraform -version
+
+        5. build a new folder name - terraform to build terraform in files (for build , update and destroy terraform).
+
+- - AWS CLI configured with your credentials
+      connect to the AWS via AWS-CLI
+
+- - SSH key pair for EC2 instance access
+     you dont need to used it ,we will create a new ssh key pair.
+
+## Setup
+
+1. Clone this repository:
+   ```
+   git clone https://github.com/davidaws2/Terraform_Project_Pokemon_DynamoDB
+   cd Terraform_Project_Pokemon_DynamoDB
+   ```
+
+2. Initialize Terraform:
+   ```
+   terraform init
+   ```
+
+3. Apply the Terraform configuration:
+   ```
+   terraform apply
+   ```
+
+  **         verify that a key pair name 'pokemon_key.pem' was create              **
+
+  **      verify the file have chmod 400 - permission read only by the user        **   
+
+
+4. After the infrastructure is provisioned, SSH into your EC2 instance:
+   ```
+   ssh ec2-user@<ec2-instance-public-ip>
+   ```
+   You can find the public IP in the Terraform output or AWS Console.
+
+5. The Pokémon Collector application should start automatically. If it doesn't, you can run it manually:
+   ```
+   python3 ~/pokemon-collector/pokemon_collector.py
+   ```
+
+## Usage
+
+Once connected to the EC2 instance, the Pokémon Collector application will prompt you to draw a Pokémon.
+  Enter 'yes' to draw a random Pokémon or 'no' to exit the application.
+  the pokemon will saved in DynamoDB table.
+  
+## Infrastructure
+
+- VPC with a public subnet
+- EC2 instance (t2.micro) running Amazon Linux 2
+- Security group allowing SSH access
+- DynamoDB table for storing Pokémon data
+
+6. Cleanup
+
+To destroy the created resources:
+
+```
+terraform destroy
+```
+
+## Note
+
+This project is for educational purposes only. Ensure you comply with PokeAPI's usage terms and AWS's pricing when using this application.
